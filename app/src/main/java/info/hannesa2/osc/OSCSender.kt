@@ -23,17 +23,17 @@ class OSCSender : Fragment() {
 
         val button = myView.findViewById<Button>(R.id.button)
         button.setOnTouchListener(OnTouchListener { v, event ->
-            val buttonClick = OSCMessage("/button/1")
+            val oscMessage = OSCMessage("/button/1")
             if (event.action == MotionEvent.ACTION_DOWN) {
-                buttonClick.addArgument(1.0)
+                oscMessage.addArgument(1.0)
             } else if (event.action == MotionEvent.ACTION_UP) {
                 v.performClick()
-                buttonClick.addArgument(0.0)
+                oscMessage.addArgument(0.0)
             } else {
                 return@OnTouchListener false
             }
 
-            OSCSendMessage().execute(MainActivity.outPort, MainActivity.OSCAddress, buttonClick)
+            OSCSendMessage().execute(MainActivity.outPort, MainActivity.OSCAddress, oscMessage)
             true
         })
 

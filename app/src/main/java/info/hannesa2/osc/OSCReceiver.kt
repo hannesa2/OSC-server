@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.illposed.osc.OSCListener
 import com.illposed.osc.OSCPortIn
+import timber.log.Timber
 import java.net.SocketException
 import java.text.DateFormat
 import java.util.Date
@@ -61,7 +62,7 @@ class OSCReceiver : Fragment() {
             receiver.addListener("/*/*", listener)
             receiver.startListening()
         } catch (e: SocketException) {
-            Log.e("AAA", "Socket creation failed!")
+            Timber.e("Socket creation failed!")
         }
     }
 
