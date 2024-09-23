@@ -4,7 +4,7 @@ apply plugin: 'org.jetbrains.kotlin.android'
 android {
     namespace 'info.hannesa2.osc'
     defaultConfig {
-        applicationId "com.etcconnect.baseosc"
+        applicationId "info.hannesa2.osc"
         minSdkVersion 21
         compileSdk 34
         targetSdkVersion 34
