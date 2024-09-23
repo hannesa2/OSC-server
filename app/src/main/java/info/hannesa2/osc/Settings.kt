@@ -1,7 +1,7 @@
 package info.hannesa2.osc
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +15,7 @@ class Settings : Fragment() {
     // Create and setup view
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         myView = inflater.inflate(R.layout.settings, container, false)
-        activity.title = "Settings"
+        activity!!.title = "Settings"
 
         // Setup Ip Address Text Field
         // TODO: If the user just clicks elsewhere, the value isn't saved. Also catch onFocusChanged!!!!

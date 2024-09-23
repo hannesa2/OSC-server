@@ -3,10 +3,10 @@ package info.hannesa2.osc
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private var fragment: Fragment? = null
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             else -> return@OnNavigationItemSelectedListener false
         }
         val transaction = fragmentManager!!.beginTransaction()
-        transaction.replace(R.id.main_container, fragment).commit()
+        transaction.replace(R.id.main_container, fragment!!).commit()
         true
     }
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         fragment = oscOutFragment
         val transaction = fragmentManager!!.beginTransaction()
-        transaction.replace(R.id.main_container, fragment).commit()
+        transaction.replace(R.id.main_container, fragment!!).commit()
 
         val policy = ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
