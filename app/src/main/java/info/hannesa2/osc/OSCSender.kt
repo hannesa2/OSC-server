@@ -17,7 +17,7 @@ class OSCSender : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         myView = inflater.inflate(R.layout.osc_out, container, false)
-        activity.title = "OSC Out"
+        activity!!.title = "OSC Out"
 
         //Setup Button 1
         val button = myView.findViewById<Button>(R.id.button)

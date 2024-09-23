@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             else -> return@OnNavigationItemSelectedListener false
         }
         val transaction = fragmentManager!!.beginTransaction()
-        transaction.replace(R.id.main_container, fragment).commit()
+        transaction.replace(R.id.main_container, fragment!!).commit()
         true
     }
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         fragment = oscOutFragment
         val transaction = fragmentManager!!.beginTransaction()
-        transaction.replace(R.id.main_container, fragment).commit()
+        transaction.replace(R.id.main_container, fragment!!).commit()
 
         val policy = ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
