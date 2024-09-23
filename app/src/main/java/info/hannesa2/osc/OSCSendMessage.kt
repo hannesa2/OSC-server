@@ -1,10 +1,9 @@
 package info.hannesa2.osc
 
-import android.content.ContentValues
 import android.os.AsyncTask
-import android.util.Log
 import com.illposed.osc.OSCMessage
 import com.illposed.osc.OSCPortOut
+import timber.log.Timber
 import java.io.IOException
 import java.net.InetAddress
 import java.net.SocketException
@@ -20,13 +19,13 @@ class OSCSendMessage : AsyncTask<Any?, Void?, Boolean>() {
             val sender = OSCPortOut(address, parms[0] as Int)
             sender.send(parms[2] as OSCMessage)
         } catch (e: SocketException) {
-            Log.d(ContentValues.TAG, "doInBackground: socket exception")
+            Timber.e("doInBackground: socket exception")
             //TODO: tell user osc send port failed
         } catch (e: UnknownHostException) {
-            Log.d(ContentValues.TAG, "doInBackground: unknown host exception")
+            Timber.e( "doInBackground: unknown host exception")
             //TODO: tell user osc send port failed
         } catch (e: IOException) {
-            Log.d(ContentValues.TAG, "doInBackground: IO exception")
+            Timber.e( "doInBackground: IO exception")
             //TODO: tell user osc send port failed
         }
         return true
