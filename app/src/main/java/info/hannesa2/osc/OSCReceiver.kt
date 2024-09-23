@@ -15,18 +15,17 @@ import java.text.DateFormat
 import java.util.Date
 
 class OSCReceiver : Fragment() {
-    //UI Elements
-    private lateinit var myView: View
-    private lateinit var myArrayAdaptor: ArrayAdapter<String>
-    private lateinit var oscInListView: ListView
 
-    //Array that holds recieves OSC Messages
+    private lateinit var myView: View
+    private lateinit var arrayAdapter: ArrayAdapter<String>
+    private lateinit var oscInListView: ListView
+    
     private var messageListIn: ArrayList<String> = ArrayList()
 
     //OSC In port
     private lateinit var receiver: OSCPortIn
 
-    var listener: OSCListener = OSCListener { time, message ->
+    private var listener: OSCListener = OSCListener { time, message ->
         //Get the OSC message built, added Date/time for convenience
         val tempList = message.arguments
         var fullMessage = """
@@ -34,7 +33,7 @@ class OSCReceiver : Fragment() {
             ${message.address}, 
             """.trimIndent()
         for (argument in tempList) {
-            fullMessage = fullMessage + argument.toString()
+            fullMessage += argument.toString()
         }
 
         //Copy the string over to a final to add to messageListIn
@@ -44,12 +43,11 @@ class OSCReceiver : Fragment() {
         requireActivity().runOnUiThread {
             messageListIn.add(0, temp)
             //Keep the list at 100 items
-            if (messageListIn.size >= 100) messageListIn.removeAt(messageListIn.size - 1)
+            if (messageListIn.size >= 100)
+                messageListIn.removeAt(messageListIn.size - 1)
 
-            //Tell the ArrayAdaptor something changed
-            myArrayAdaptor.notifyDataSetChanged()
+            arrayAdapter.notifyDataSetChanged()
         }
-        //System.out.println("Message received! " + fullMessage);
     }
 
     init {
@@ -72,8 +70,8 @@ class OSCReceiver : Fragment() {
         myView = inflater.inflate(R.layout.osc_in, container, false)
         oscInListView = myView.findViewById(R.id.oscInList)
         requireActivity().title = "OSC In"
-        myArrayAdaptor = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, messageListIn)
-        oscInListView.adapter = myArrayAdaptor
+        arrayAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, messageListIn)
+        oscInListView.adapter = arrayAdapter
         return myView
     }
 
