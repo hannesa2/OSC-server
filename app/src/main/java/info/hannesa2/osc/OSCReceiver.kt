@@ -41,7 +41,7 @@ class OSCReceiver : Fragment() {
         val temp = fullMessage
 
         //Needs to be added on the UI thread
-        activity!!.runOnUiThread {
+        requireActivity().runOnUiThread {
             messageListIn.add(0, temp)
             //Keep the list at 100 items
             if (messageListIn.size >= 100) messageListIn.removeAt(messageListIn.size - 1)
@@ -71,8 +71,8 @@ class OSCReceiver : Fragment() {
         //Set up the ListView to show the MessageListIn
         myView = inflater.inflate(R.layout.osc_in, container, false)
         oscInListView = myView.findViewById(R.id.oscInList)
-        activity!!.title = "OSC In"
-        myArrayAdaptor = ArrayAdapter(activity!!, android.R.layout.simple_list_item_1, messageListIn)
+        requireActivity().title = "OSC In"
+        myArrayAdaptor = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, messageListIn)
         oscInListView.adapter = myArrayAdaptor
         return myView
     }
