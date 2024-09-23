@@ -15,7 +15,7 @@ class Settings : Fragment() {
     // Create and setup view
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         myView = inflater.inflate(R.layout.settings, container, false)
-        activity!!.title = "Settings"
+        requireActivity().title = "Settings"
 
         // Setup Ip Address Text Field
         // TODO: If the user just clicks elsewhere, the value isn't saved. Also catch onFocusChanged!!!!
