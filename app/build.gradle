@@ -6,8 +6,8 @@ android {
     defaultConfig {
         applicationId "com.etcconnect.baseosc"
         minSdkVersion 21
-        compileSdk 30
-        targetSdkVersion 30
+        compileSdk 31
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
