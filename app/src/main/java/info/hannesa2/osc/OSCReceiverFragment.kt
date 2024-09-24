@@ -34,6 +34,7 @@ class OSCReceiverFragment : Fragment() {
     private var receiver: OSCPortIn? = null
 
     private var listener: OSCListener = OSCListener { _, message ->
+        Timber.d("${System.currentTimeMillis() - time.time} ${message.address} ${message.arguments[0]}")
         //Get the OSC message built, added Date/time for convenience
         val tempList = message.arguments
         var fullMessage = """

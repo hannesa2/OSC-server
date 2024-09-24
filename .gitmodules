@@ -1,0 +1,3 @@
+[submodule "JavaOSC"]
+	path = JavaOSC
+	url = git@github.com:hannesa2/JavaOSC.git
