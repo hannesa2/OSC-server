@@ -33,7 +33,7 @@ class OSCSender : Fragment() {
                 return@OnTouchListener false
             }
 
-            OSCSendMessage().execute(MainActivity.outPort, MainActivity.OSCAddress, oscMessage)
+            oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
             true
         })
 
@@ -48,7 +48,7 @@ class OSCSender : Fragment() {
             } else {
                 return@OnTouchListener false
             }
-            OSCSendMessage().execute(MainActivity.outPort, MainActivity.OSCAddress, oscMessage)
+            oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
             true
         })
 
@@ -63,7 +63,7 @@ class OSCSender : Fragment() {
             } else {
                 return@OnTouchListener false
             }
-            OSCSendMessage().execute(MainActivity.outPort, MainActivity.OSCAddress, oscMessage)
+            oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
             true
         })
 
@@ -74,7 +74,7 @@ class OSCSender : Fragment() {
             val customText = customEditText.text.toString()
             val oscMessage = OSCMessage("/" + customText.substring(0, customText.indexOf('=', 0)))
             oscMessage.addArgument(customText.substring(customText.indexOf('=', 0), customText.length))
-            OSCSendMessage().execute(MainActivity.outPort, MainActivity.OSCAddress, oscMessage)
+            oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
         }
 
         return myView
