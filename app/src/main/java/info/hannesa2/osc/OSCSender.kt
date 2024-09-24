@@ -52,9 +52,9 @@ class OSCSender : Fragment() {
             true
         })
 
-        val button3 = myView.findViewById<Button>(R.id.button3)
-        button3.setOnTouchListener(OnTouchListener { v, event ->
-            val oscMessage = OSCMessage("/button/3")
+        val buttonFilter = myView.findViewById<Button>(R.id.button3)
+        buttonFilter.setOnTouchListener(OnTouchListener { v, event ->
+            val oscMessage = OSCMessage("/filter")
             if (event.action == MotionEvent.ACTION_DOWN) {
                 oscMessage.addArgument(1.0)
             } else if (event.action == MotionEvent.ACTION_UP) {

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:digits="0123456789."
-            android:hint="192.168.1.1"
+            android:hint="192.168.43.129"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
             android:singleLine="true" />
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="8001"
+            android:hint="5005"
             android:imeOptions="actionDone"
             android:inputType="number"
             android:singleLine="true" />
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="8000"
+            android:hint="9001"
             android:imeOptions="actionDone"
             android:inputType="number"
             android:singleLine="true" />
