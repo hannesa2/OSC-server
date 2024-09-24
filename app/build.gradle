@@ -37,5 +37,5 @@ dependencies {
     implementation "com.github.AppDevNext.Logcat:LogcatCoreLib:3.2"
 
     // https://mvnrepository.com/artifact/com.illposed.osc/javaosc-core
-    implementation group: 'com.illposed.osc', name: 'javaosc-core', version: '0.4'
+    implementation "com.illposed.osc:javaosc-core:0.4"
 }
