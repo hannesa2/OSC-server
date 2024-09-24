@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -29,7 +28,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Buttons"/>
+                    android:text="Buttons" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -41,21 +40,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="1"/>
+                        android:text="1" />
 
                     <Button
                         android:id="@+id/button2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="2"/>
+                        android:text="2" />
 
                     <Button
                         android:id="@+id/buttonFilter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="send /filter"/>
+                        android:text="send /filter" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -69,16 +68,16 @@
             android:layout_height="wrap_content"
             card_view:cardCornerRadius="4dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Custom"/>
+                    android:text="Custom" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,14 +88,15 @@
                         android:id="@+id/customText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:layout_weight="1"
                         android:hint="cmd=1"
-                        android:layout_weight="1"/>
+                        android:inputType="text" />
+
                     <Button
                         android:id="@+id/sendButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Send"/>
+                        android:text="Send" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
