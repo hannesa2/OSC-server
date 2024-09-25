@@ -10,8 +10,10 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
-import com.illposed.osc.OSCListener
-import com.illposed.osc.OSCPortIn
+import com.illposed.osc.OSCMessage
+import com.illposed.osc.OSCMessageListener
+import com.illposed.osc.messageselector.OSCPatternAddressMessageSelector
+import com.illposed.osc.transport.OSCPortIn
 import info.hannesa2.osc.databinding.OscInBinding
 import timber.log.Timber
 import java.net.Inet4Address
@@ -33,13 +35,13 @@ class OSCReceiverFragment : Fragment() {
     //OSC In port
     private var receiver: OSCPortIn? = null
 
-    private var listener: OSCListener = OSCListener { _, message ->
-        Timber.d("${System.currentTimeMillis() - time.time} ${message.address} ${message.arguments[0]}")
+    private var listener: OSCMessageListener = OSCMessageListener { message ->
+        Timber.d("<= ${message.message.address} ${message.message.arguments[0]}")
         //Get the OSC message built, added Date/time for convenience
-        val tempList = message.arguments
+        val tempList = message.message.arguments
         var fullMessage = """
             ${DateFormat.getDateTimeInstance().format(Date())}
-            ${message.address}, 
+            ${message.message.address}, 
             """.trimIndent()
         for (argument in tempList) {
             fullMessage += argument.toString()
@@ -73,7 +75,7 @@ class OSCReceiverFragment : Fragment() {
             //Hook up the OSC Receiver to listen to messages. Right now
             //      it's just listening to all messages with /*/* format
             //TODO: listen to more OSC messages
-            receiver!!.addListener("/*/*", listener)
+            receiver!!.dispatcher.addListener(OSCPatternAddressMessageSelector("/*/*"), listener)
             receiver!!.startListening()
             binding.ipAddress.post { binding.ipAddress.text = getIpv4HostAddress() + ":" + MainActivity.inPort }
             Timber.d("Listening on ${MainActivity.inPort}")
