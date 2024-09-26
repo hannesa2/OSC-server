@@ -11,18 +11,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import com.illposed.osc.OSCMessage
+import info.hannesa2.osc.databinding.OscInBinding
+import info.hannesa2.osc.databinding.OscOutBinding
 
 class OSCSenderFragment : Fragment() {
 
-    private lateinit var myView: View
+    private var _binding: OscOutBinding? = null
+    private val binding get() = _binding!!
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        myView = inflater.inflate(R.layout.osc_out, container, false)
+        _binding = OscOutBinding.inflate(inflater, container, false)
+        val myView = binding.root
         requireActivity().title = "OSC Out"
 
-        val button = myView.findViewById<Button>(R.id.button)
-        button.setOnTouchListener(OnTouchListener { v, event ->
+        binding.button.setOnTouchListener(OnTouchListener { v, event ->
             val oscMessage = OSCMessage("/button/1")
             if (event.action == MotionEvent.ACTION_DOWN) {
                 oscMessage.addArgument(1.0)
@@ -37,8 +40,7 @@ class OSCSenderFragment : Fragment() {
             true
         })
 
-        val button2 = myView.findViewById<Button>(R.id.button2)
-        button2.setOnTouchListener(OnTouchListener { v, event ->
+        binding.button2.setOnTouchListener(OnTouchListener { v, event ->
             val oscMessage = OSCMessage("/button/2")
             if (event.action == MotionEvent.ACTION_DOWN) {
                 oscMessage.addArgument(1.0)
@@ -52,8 +54,7 @@ class OSCSenderFragment : Fragment() {
             true
         })
 
-        val buttonFilter = myView.findViewById<Button>(R.id.buttonFilter)
-        buttonFilter.setOnTouchListener(OnTouchListener { v, event ->
+        binding.buttonFilter.setOnTouchListener(OnTouchListener { v, event ->
             val oscMessage = OSCMessage("/filter")
             if (event.action == MotionEvent.ACTION_DOWN) {
                 oscMessage.addArgument(1.0)
@@ -68,16 +69,19 @@ class OSCSenderFragment : Fragment() {
         })
 
         //Setup custom send button
-        val customEditText = myView.findViewById<EditText>(R.id.customText)
-        val customSendButton = myView.findViewById<Button>(R.id.sendButton)
-        customSendButton.setOnClickListener { //TODO: make this more robust: crashes if not the right format and always sends strings as arguments.
-            val customText = customEditText.text.toString()
+        binding.sendButton.setOnClickListener { //TODO: make this more robust: crashes if not the right format and always sends strings as arguments.
+            val customText = binding.customText.text.toString()
             val oscMessage = OSCMessage("/" + customText.substring(0, customText.indexOf('=', 0)))
             oscMessage.addArgument(customText.substring(customText.indexOf('=', 0), customText.length))
             oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
         }
 
         return myView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

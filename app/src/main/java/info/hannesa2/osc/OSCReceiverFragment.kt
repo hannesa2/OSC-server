@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.TextView
 import com.illposed.osc.OSCListener
 import com.illposed.osc.OSCPortIn
+import info.hannesa2.osc.databinding.OscInBinding
 import timber.log.Timber
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -22,9 +22,11 @@ class OSCReceiverFragment : Fragment() {
 
     private lateinit var myView: View
     private lateinit var arrayAdapter: ArrayAdapter<String>
-    private lateinit var oscInListView: ListView
 
     private var messageListIn: ArrayList<String> = ArrayList()
+
+    private var _binding: OscInBinding? = null
+    private val binding get() = _binding!!
 
     //OSC In port
     private lateinit var receiver: OSCPortIn
@@ -71,15 +73,20 @@ class OSCReceiverFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        myView = inflater.inflate(R.layout.osc_in, container, false)
-        oscInListView = myView.findViewById(R.id.oscInList)
+        _binding = OscInBinding.inflate(inflater, container, false)
+        val myView = binding.root
         requireActivity().title = "OSC In"
         arrayAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, messageListIn)
-        oscInListView.adapter = arrayAdapter
+        binding.oscInList.adapter = arrayAdapter
         doListen()
-        myView.findViewById<TextView>(R.id.ipAddress).text = getIpv4HostAddress()
-        myView.findViewById<TextView>(R.id.listenPort).text = MainActivity.inPort.toString()
+        binding.ipAddress.text = getIpv4HostAddress()
+        binding.listenPort.setText(MainActivity.inPort.toString())
         return myView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun getIpv4HostAddress(): String? {
