@@ -8,10 +8,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
+import androidx.core.widget.doOnTextChanged
 import com.illposed.osc.OSCMessage
-import info.hannesa2.osc.databinding.OscInBinding
 import info.hannesa2.osc.databinding.OscOutBinding
 
 class OSCSenderFragment : Fragment() {
@@ -24,35 +22,6 @@ class OSCSenderFragment : Fragment() {
         _binding = OscOutBinding.inflate(inflater, container, false)
         val myView = binding.root
         requireActivity().title = "OSC Out"
-
-        binding.button.setOnTouchListener(OnTouchListener { v, event ->
-            val oscMessage = OSCMessage("/button/1")
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                oscMessage.addArgument(1.0)
-            } else if (event.action == MotionEvent.ACTION_UP) {
-                v.performClick()
-                oscMessage.addArgument(0.0)
-            } else {
-                return@OnTouchListener false
-            }
-
-            oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
-            true
-        })
-
-        binding.button2.setOnTouchListener(OnTouchListener { v, event ->
-            val oscMessage = OSCMessage("/button/2")
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                oscMessage.addArgument(1.0)
-            } else if (event.action == MotionEvent.ACTION_UP) {
-                v.performClick()
-                oscMessage.addArgument(0.0)
-            } else {
-                return@OnTouchListener false
-            }
-            oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
-            true
-        })
 
         binding.buttonFilter.setOnTouchListener(OnTouchListener { v, event ->
             val oscMessage = OSCMessage("/filter")
@@ -76,6 +45,23 @@ class OSCSenderFragment : Fragment() {
             oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
         }
 
+        // Setup Ip Address Text Field
+        // TODO: If the user just clicks elsewhere, the value isn't saved. Also catch onFocusChanged!!!!
+        binding.ipAddress.setText(MainActivity.OSCAddress)
+        binding.ipAddress.doOnTextChanged { text, start, before, count ->
+            MainActivity.OSCAddress = binding.ipAddress.text.toString()
+        }
+
+        // Setup Out Port Text Field
+        // TODO: If the user just clicks elsewhere, the value isn't saved. Also catch onFocusChanged!!!!
+        binding.outPort.setText(MainActivity.outPort.toString())
+        binding.outPort.doOnTextChanged { text, start, before, count ->
+        try {
+                MainActivity.outPort = binding.outPort.text.toString().toInt()
+            } catch (nfe: NumberFormatException) {
+                //Todo: add message to user here saying it must be a number
+            }
+        }
         return myView
     }
 
