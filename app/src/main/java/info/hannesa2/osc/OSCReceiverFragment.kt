@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.EditText
 import android.widget.TextView
 import com.illposed.osc.OSCListener
 import com.illposed.osc.OSCPortIn
+import info.hannesa2.osc.databinding.OscInBinding
 import timber.log.Timber
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -18,16 +20,18 @@ import java.net.SocketException
 import java.text.DateFormat
 import java.util.Date
 
-class OSCReceiver : Fragment() {
+class OSCReceiverFragment : Fragment() {
 
     private lateinit var myView: View
     private lateinit var arrayAdapter: ArrayAdapter<String>
-    private lateinit var oscInListView: ListView
 
     private var messageListIn: ArrayList<String> = ArrayList()
 
+    private var _binding: OscInBinding? = null
+    private val binding get() = _binding!!
+
     //OSC In port
-    private lateinit var receiver: OSCPortIn
+    private var receiver: OSCPortIn? = null
 
     private var listener: OSCListener = OSCListener { _, message ->
         //Get the OSC message built, added Date/time for convenience
@@ -54,15 +58,23 @@ class OSCReceiver : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun doListen() {
         try {
-            receiver = OSCPortIn(MainActivity.inPort)
+            if (receiver == null)
+                receiver = OSCPortIn(MainActivity.inPort)
+            else {
+                receiver!!.stopListening()
+                Thread.sleep(300)
+                receiver = OSCPortIn(MainActivity.inPort)
+            }
 
             //Hook up the OSC Receiver to listen to messages. Right now
             //      it's just listening to all messages with /*/* format
             //TODO: listen to more OSC messages
-            receiver.addListener("/*/*", listener)
-            receiver.startListening()
+            receiver!!.addListener("/*/*", listener)
+            receiver!!.startListening()
+            binding.ipAddress.post { binding.ipAddress.text = getIpv4HostAddress() + ":" + MainActivity.inPort }
             Timber.d("Listening on ${MainActivity.inPort}")
         } catch (e: SocketException) {
             Timber.e("Socket creation failed! $e")
@@ -71,15 +83,29 @@ class OSCReceiver : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        myView = inflater.inflate(R.layout.osc_in, container, false)
-        oscInListView = myView.findViewById(R.id.oscInList)
+        _binding = OscInBinding.inflate(inflater, container, false)
+        val myView = binding.root
         requireActivity().title = "OSC In"
         arrayAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, messageListIn)
-        oscInListView.adapter = arrayAdapter
+        binding.oscInList.adapter = arrayAdapter
         doListen()
-        myView.findViewById<TextView>(R.id.ipAddress).text = "IP address: " + getIpv4HostAddress()
-        myView.findViewById<TextView>(R.id.listenPort).text = "Listen on : " + MainActivity.inPort
+        binding.ipAddress.text = getIpv4HostAddress()
+        binding.listenPort.setText(MainActivity.inPort.toString())
+        binding.listenPort.setOnEditorActionListener { textView, i, keyEvent ->
+            try {
+                MainActivity.inPort = binding.listenPort.text.toString().toInt()
+                doListen()
+            } catch (nfe: NumberFormatException) {
+                //Todo: add message to user here saying it must be a number
+            }
+            false
+        }
         return myView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun getIpv4HostAddress(): String? {

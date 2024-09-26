@@ -20,9 +20,6 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_oscIn -> {
                 oscInFragment
             }
-            R.id.navigation_settings -> {
-                settingsFragment
-            }
             else -> return@OnNavigationItemSelectedListener false
         }
         val transaction = fragmentManager!!.beginTransaction()
@@ -52,8 +49,7 @@ class MainActivity : AppCompatActivity() {
         var inPort: Int = 9001
 
         // The different pages, the in and out osc fragments are destroyed and recreated on settings changes
-        var oscInFragment: Fragment = OSCReceiver()
-        var oscOutFragment: Fragment = OSCSender()
-        var settingsFragment: Fragment = Settings()
+        var oscInFragment: Fragment = OSCReceiverFragment()
+        var oscOutFragment: Fragment = OSCSenderFragment()
     }
 }
