@@ -12,7 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import com.illposed.osc.OSCMessage
 
-class OSCSender : Fragment() {
+class OSCSenderFragment : Fragment() {
 
     private lateinit var myView: View
 

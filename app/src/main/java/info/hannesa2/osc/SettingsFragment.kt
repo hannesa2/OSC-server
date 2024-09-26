@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 
-class Settings : Fragment() {
+class SettingsFragment : Fragment() {
 
     private lateinit var myView: View
 
@@ -24,7 +24,7 @@ class Settings : Fragment() {
         ipAddressEditText.setOnEditorActionListener { textView, i, keyEvent ->
             if (i == EditorInfo.IME_ACTION_DONE) {
                 MainActivity.OSCAddress = ipAddressEditText.text.toString()
-                MainActivity.oscOutFragment = OSCSender()
+                MainActivity.oscOutFragment = OSCSenderFragment()
             }
             false
         }
@@ -37,7 +37,7 @@ class Settings : Fragment() {
             if (i == EditorInfo.IME_ACTION_DONE) {
                 try {
                     MainActivity.outPort = outPortEditText.text.toString().toInt()
-                    MainActivity.oscOutFragment = OSCSender()
+                    MainActivity.oscOutFragment = OSCSenderFragment()
                 } catch (nfe: NumberFormatException) {
                     //Todo: add message to user here saying it must be a number
                 }
@@ -53,7 +53,7 @@ class Settings : Fragment() {
             if (i == EditorInfo.IME_ACTION_DONE) {
                 try {
                     MainActivity.inPort = inPortEditText.text.toString().toInt()
-                    MainActivity.oscInFragment = OSCReceiver()
+                    MainActivity.oscInFragment = OSCReceiverFragment()
                 } catch (nfe: NumberFormatException) {
                     //Todo: add message to user here saying it must be a number
                 }

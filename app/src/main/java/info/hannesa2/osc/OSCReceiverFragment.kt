@@ -18,7 +18,7 @@ import java.net.SocketException
 import java.text.DateFormat
 import java.util.Date
 
-class OSCReceiver : Fragment() {
+class OSCReceiverFragment : Fragment() {
 
     private lateinit var myView: View
     private lateinit var arrayAdapter: ArrayAdapter<String>
@@ -77,8 +77,8 @@ class OSCReceiver : Fragment() {
         arrayAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, messageListIn)
         oscInListView.adapter = arrayAdapter
         doListen()
-        myView.findViewById<TextView>(R.id.ipAddress).text = "IP address: " + getIpv4HostAddress()
-        myView.findViewById<TextView>(R.id.listenPort).text = "Listen on : " + MainActivity.inPort
+        myView.findViewById<TextView>(R.id.ipAddress).text = getIpv4HostAddress()
+        myView.findViewById<TextView>(R.id.listenPort).text = MainActivity.inPort.toString()
         return myView
     }
 
