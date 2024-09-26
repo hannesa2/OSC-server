@@ -17,7 +17,7 @@ fun OSCMessage.send(outPort: Int, oscAddress: String) {
         val address = InetAddress.getByName(oscAddress)
         val sender = OSCPortOut(address, outPort)
         try {
-            Timber.d("=> ${message.address} ${message.arguments[0]} $address:${outPort}")
+            Timber.d("=> ${message.arguments.firstOrNull()} $address:${outPort}")
             sender.send(message)
         } catch (e: SocketException) {
             Timber.e("$address:${outPort} $e")
