@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.illposed.osc.OSCListener
@@ -29,7 +30,7 @@ class OSCReceiverFragment : Fragment() {
     private val binding get() = _binding!!
 
     //OSC In port
-    private lateinit var receiver: OSCPortIn
+    private var receiver: OSCPortIn? = null
 
     private var listener: OSCListener = OSCListener { _, message ->
         //Get the OSC message built, added Date/time for convenience
@@ -56,15 +57,23 @@ class OSCReceiverFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun doListen() {
         try {
-            receiver = OSCPortIn(MainActivity.inPort)
+            if (receiver == null)
+                receiver = OSCPortIn(MainActivity.inPort)
+            else {
+                receiver!!.stopListening()
+                Thread.sleep(300)
+                receiver = OSCPortIn(MainActivity.inPort)
+            }
 
             //Hook up the OSC Receiver to listen to messages. Right now
             //      it's just listening to all messages with /*/* format
             //TODO: listen to more OSC messages
-            receiver.addListener("/*/*", listener)
-            receiver.startListening()
+            receiver!!.addListener("/*/*", listener)
+            receiver!!.startListening()
+            binding.ipAddress.post { binding.ipAddress.text = getIpv4HostAddress() + ":" + MainActivity.inPort }
             Timber.d("Listening on ${MainActivity.inPort}")
         } catch (e: SocketException) {
             Timber.e("Socket creation failed! $e")
@@ -81,6 +90,15 @@ class OSCReceiverFragment : Fragment() {
         doListen()
         binding.ipAddress.text = getIpv4HostAddress()
         binding.listenPort.setText(MainActivity.inPort.toString())
+        binding.listenPort.setOnEditorActionListener { textView, i, keyEvent ->
+            try {
+                MainActivity.inPort = binding.listenPort.text.toString().toInt()
+                doListen()
+            } catch (nfe: NumberFormatException) {
+                //Todo: add message to user here saying it must be a number
+            }
+            false
+        }
         return myView
     }
 

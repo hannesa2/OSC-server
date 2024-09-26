@@ -45,22 +45,6 @@ class SettingsFragment : Fragment() {
             false
         }
 
-        // Setup In Port Text Field
-        // TODO: If the user just clicks elsewhere, the value isn't saved. Also catch onFocusChanged!!!!
-        val inPortEditText = myView.findViewById<EditText>(R.id.inPort)
-        inPortEditText.setText(MainActivity.inPort.toString())
-        inPortEditText.setOnEditorActionListener { textView, i, keyEvent ->
-            if (i == EditorInfo.IME_ACTION_DONE) {
-                try {
-                    MainActivity.inPort = inPortEditText.text.toString().toInt()
-                    MainActivity.oscInFragment = OSCReceiverFragment()
-                } catch (nfe: NumberFormatException) {
-                    //Todo: add message to user here saying it must be a number
-                }
-            }
-            false
-        }
-
         return myView
     }
 }
