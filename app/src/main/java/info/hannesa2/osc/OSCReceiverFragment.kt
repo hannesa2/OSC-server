@@ -12,9 +12,13 @@ import android.widget.EditText
 import android.widget.TextView
 import com.illposed.osc.OSCMessage
 import com.illposed.osc.OSCMessageListener
+import com.illposed.osc.messageselector.JavaRegexAddressMessageSelector
 import com.illposed.osc.messageselector.OSCPatternAddressMessageSelector
 import com.illposed.osc.transport.OSCPortIn
 import info.hannesa2.osc.databinding.OscInBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -51,7 +55,7 @@ class OSCReceiverFragment : Fragment() {
         val temp = fullMessage
 
         //Needs to be added on the UI thread
-        requireActivity().runOnUiThread {
+        CoroutineScope(Dispatchers.Main).launch {
             messageListIn.add(0, temp)
             //Keep the list at 100 items
             if (messageListIn.size >= 100)
