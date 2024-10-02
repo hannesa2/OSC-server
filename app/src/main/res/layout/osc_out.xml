@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:digits="0123456789."
-            android:hint="192.168.43.129"
+            android:hint="10.0.2.16"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
             android:singleLine="true" />

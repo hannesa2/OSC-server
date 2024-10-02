@@ -44,9 +44,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        var OSCAddress: String = "192.168.43.129"
+        var OSCAddress: String = "10.0.2.16"
         var outPort: Int = 5005
-        var inPort: Int = 9001
+        var inPort: Int = 5005
 
         // The different pages, the in and out osc fragments are destroyed and recreated on settings changes
         var oscInFragment: Fragment = OSCReceiverFragment()
