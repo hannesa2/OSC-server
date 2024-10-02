@@ -79,7 +79,8 @@ class OSCReceiverFragment : Fragment() {
             //Hook up the OSC Receiver to listen to messages. Right now
             //      it's just listening to all messages with /*/* format
             //TODO: listen to more OSC messages
-            receiver!!.dispatcher.addListener(OSCPatternAddressMessageSelector("/*/*"), listener)
+            receiver!!.dispatcher.addListener(JavaRegexAddressMessageSelector(".*"), listener)
+//            receiver!!.dispatcher.addListener(OSCPatternAddressMessageSelector("/*/*"), listener)
             receiver!!.startListening()
             binding.ipAddress.post { binding.ipAddress.text = getIpv4HostAddress() + ":" + MainActivity.inPort }
             Timber.d("Listening on ${MainActivity.inPort}")
