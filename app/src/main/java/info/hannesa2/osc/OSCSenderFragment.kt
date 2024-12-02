@@ -24,12 +24,16 @@ class OSCSenderFragment : Fragment() {
         requireActivity().title = "OSC Out"
 
         binding.buttonFilter.setOnTouchListener(OnTouchListener { v, event ->
-            val oscMessage = OSCMessage("/filter")
+            val oscMessage: OSCMessage
             if (event.action == MotionEvent.ACTION_DOWN) {
-                oscMessage.addArgument(1.0)
+                val args: MutableList<Int> = mutableListOf()
+                args.add(1)
+                oscMessage = OSCMessage("/filter", args)
             } else if (event.action == MotionEvent.ACTION_UP) {
                 v.performClick()
-                oscMessage.addArgument(0.0)
+                val args: MutableList<Int> = mutableListOf()
+                args.add(0)
+                oscMessage = OSCMessage("/filter", args)
             } else {
                 return@OnTouchListener false
             }
@@ -40,8 +44,9 @@ class OSCSenderFragment : Fragment() {
         //Setup custom send button
         binding.sendButton.setOnClickListener { //TODO: make this more robust: crashes if not the right format and always sends strings as arguments.
             val customText = binding.customText.text.toString()
-            val oscMessage = OSCMessage("/" + customText.substring(0, customText.indexOf('=', 0)))
-            oscMessage.addArgument(customText.substring(customText.indexOf('=', 0), customText.length))
+            val args: MutableList<String> = mutableListOf()
+            args.add(customText.substring(customText.indexOf('=', 0), customText.length))
+            val oscMessage = OSCMessage("/" + customText.substring(0, customText.indexOf('=', 0)), args)
             oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
         }
 
