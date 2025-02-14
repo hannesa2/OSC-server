@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import com.illposed.osc.OSCMessage
 import info.hannesa2.osc.databinding.OscOutBinding
@@ -38,11 +39,18 @@ class OSCSenderFragment : Fragment() {
         })
 
         //Setup custom send button
-        binding.sendButton.setOnClickListener { //TODO: make this more robust: crashes if not the right format and always sends strings as arguments.
+        binding.sendButton.setOnClickListener {
             val customText = binding.customText.text.toString()
-            val oscMessage = OSCMessage("/" + customText.substring(0, customText.indexOf('=', 0)))
-            oscMessage.addArgument(customText.substring(customText.indexOf('=', 0), customText.length))
-            oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
+            val args: MutableList<String> = mutableListOf()
+            if (customText.isEmpty()) {
+                Toast.makeText(requireContext(), "Custom command is empty", Toast.LENGTH_LONG).show()
+            } else if (customText.indexOf('=', 0) == -1) {
+                Toast.makeText(requireContext(), "Custom command miss an '='", Toast.LENGTH_LONG).show()
+            } else {
+                args.add(customText.substring(customText.indexOf('=', 0), customText.length))
+                val oscMessage = OSCMessage("/" + customText.substring(0, customText.indexOf('=', 0)))
+                oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
+            }
         }
 
         // Setup Ip Address Text Field
@@ -56,7 +64,7 @@ class OSCSenderFragment : Fragment() {
         // TODO: If the user just clicks elsewhere, the value isn't saved. Also catch onFocusChanged!!!!
         binding.outPort.setText(MainActivity.outPort.toString())
         binding.outPort.doOnTextChanged { text, start, before, count ->
-        try {
+            try {
                 MainActivity.outPort = binding.outPort.text.toString().toInt()
             } catch (nfe: NumberFormatException) {
                 //Todo: add message to user here saying it must be a number

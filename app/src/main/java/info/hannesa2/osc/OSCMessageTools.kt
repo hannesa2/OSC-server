@@ -21,13 +21,10 @@ fun OSCMessage.send(outPort: Int, oscAddress: String) {
             sender.send(message)
         } catch (e: SocketException) {
             Timber.e("$address:${outPort} $e")
-            //TODO: tell user osc send port failed
         } catch (e: UnknownHostException) {
             Timber.e("$address:${outPort} $e")
-            //TODO: tell user osc send port failed
         } catch (e: IOException) {
             Timber.e("$address:${outPort} $e")
-            //TODO: tell user osc send port failed
         }
     }
 }
