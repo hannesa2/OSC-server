@@ -25,12 +25,16 @@ class OSCSenderFragment : Fragment() {
         requireActivity().title = "OSC Out"
 
         binding.buttonFilter.setOnTouchListener(OnTouchListener { v, event ->
-            val oscMessage = OSCMessage("/filter")
+            val oscMessage: OSCMessage
             if (event.action == MotionEvent.ACTION_DOWN) {
-                oscMessage.addArgument(1.0)
+                val args: MutableList<Int> = mutableListOf()
+                args.add(1)
+                oscMessage = OSCMessage("/filter", args)
             } else if (event.action == MotionEvent.ACTION_UP) {
                 v.performClick()
-                oscMessage.addArgument(0.0)
+                val args: MutableList<Int> = mutableListOf()
+                args.add(0)
+                oscMessage = OSCMessage("/filter", args)
             } else {
                 return@OnTouchListener false
             }
@@ -48,7 +52,7 @@ class OSCSenderFragment : Fragment() {
                 Toast.makeText(requireContext(), "Custom command miss an '='", Toast.LENGTH_LONG).show()
             } else {
                 args.add(customText.substring(customText.indexOf('=', 0), customText.length))
-                val oscMessage = OSCMessage("/" + customText.substring(0, customText.indexOf('=', 0)))
+                val oscMessage = OSCMessage("/" + customText.substring(0, customText.indexOf('=', 0)), args)
                 oscMessage.send(MainActivity.outPort, MainActivity.OSCAddress)
             }
         }
